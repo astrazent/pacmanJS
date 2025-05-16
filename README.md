@@ -12,9 +12,9 @@ Dự án được thực hiện bởi **Nhóm Đề Tài 04** trong khuôn khổ
 |------------------|-----------------|
 | Mai Quý Tùng     | B21DCCN767      |
 | Vũ Hồng Quân     | B21DCCN619      |
-| Vĩ Văn Khương    | B22DCAT166      |
+| Vũ Văn Khương    | B22DCAT166      |
 | Phan Gia Nguyên  | B21DCCN096      |
-| Lý Thàng Đạt     | B21DCCN214      |
+| Lý Thành Đạt     | B21DCCN214      |
 
 ## 🧠 Công Nghệ & Cấu Trúc
 
