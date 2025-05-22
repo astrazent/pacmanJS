@@ -1,7 +1,7 @@
 import TileMap from "./TileMap.js";
 
 const tileSize = 32; // Kích thước của mỗi ô trong game
-const velocity = 2; // Tốc độ di chuyển của pacman và ghost
+const velocity = 4; // Tốc độ di chuyển của pacman và ghost
 
 const canvas = document.getElementById("gameCanvas"); // Lấy thẻ canvas từ HTML
 const ctx = canvas.getContext("2d"); // Lấy context 2d từ canvas
@@ -104,23 +104,23 @@ buttonVisualize.addEventListener("click", () => {
 // Hàm vẽ game over hoặc game win
 function drawGameEnd(){
     if(gameOver || gameWin){
-        let text = 'You Win!';
+        let text = 'YOU WIN';
         if(gameOver){
-            text = 'Game Over!';
+            text = 'GAME OVER';
         }
         tileMap.deletePath("ghost");
         tileMap.deletePath("pac");
-        ctx.fillStyle = 'black';
+        tileMap.deletePath("block");
+        ctx.fillStyle = '#FBCF06';
         ctx.fillRect(0, canvas.height/3.2, canvas.width, 80);
-        ctx.font = "80px comic sans";
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop("0", "magenta");
-        gradient.addColorStop("0.5", "blue");
-        gradient.addColorStop("1.0", "red");
-
-        ctx.fillStyle = gradient;
-        ctx.fillText(text, 10, canvas.height/2);
-
+        ctx.font = "100px 'VT323'";
+        ctx.textAlign = "left";
+        ctx.fillStyle = "red";
+        if(text == 'GAME OVER'){
+            ctx.fillText(text, 25, canvas.height / 2);
+        } else {
+            ctx.fillText(text, 65, canvas.height / 2);
+        }
     }
 }
 

@@ -286,10 +286,11 @@ export default class Pacman {
             // Đảo ngược thứ tự x, y của mảng
             if (pathh != null) {
                 pathh = pathh.map(({ x, y }) => ({ x: y, y: x }));
-                if(visualize){
+                if (visualize) {
                     if (!powerDot || this.powerDotAboutToExpire) {
                         this.tileMap.getPath(pathh, "ghost");
                         this.tileMap.deletePath("pac");
+                        this.tileMap.deletePath("block");
                     } else {
                         pathh.pop();
                         this.tileMap.getPath(pathh, "pac");
@@ -316,7 +317,7 @@ export default class Pacman {
                     title
                 );
             }
-            if(action == "ON"){
+            if (action == "ON") {
                 // Nếu bị rơi vào vòng lặp vô tận
                 if (this.exitLoop != 0) {
                     if (
@@ -324,13 +325,15 @@ export default class Pacman {
                         this.pathDotEscape != null &&
                         this.pathDotEscape.length > 0
                     ) {
-                        if(visualize){
+                        if (visualize) {
+                            this.tileMap.deletePath("block");
                             this.tileMap.deletePath("pac");
-                            this.tileMap.getPath([...this.pathDotEscape], "loop"); //clone để tránh tham chiếu
+                            this.tileMap.getPath(
+                                [...this.pathDotEscape],
+                                "loop"
+                            ); //clone để tránh tham chiếu
                         }
-                        console.log(this.pathDotEscape);
-                        console.log(this.pathDotEscape.length);
-    
+
                         let dirDot;
                         dirDot = this.#getDirection(
                             this.x,
@@ -382,8 +385,22 @@ export default class Pacman {
 
             const step = [];
             if (dir === null) {
-                if(action == "ON"){
-                    this.#manualKeyDown(0);
+                if (action == "ON") {
+                    let tempStep = [];
+                    for (let i = 0; i < 4; i++) {
+                        if (
+                            !this.tileMap.didCollideWithEnviroment(
+                                this.x,
+                                this.y,
+                                i
+                            )
+                        ) {
+                            // nếu không va chạm với môi trường
+                            tempStep.push(i);
+                        }
+                    }
+                    const k = Math.floor(Math.random() * tempStep.length);
+                    this.#manualKeyDown(tempStep[k]);
                 }
             } else {
                 if (!powerDot || this.powerDotAboutToExpire) {
@@ -406,9 +423,10 @@ export default class Pacman {
                 if (step.includes(this.pathDot)) {
                     if (dot != null && visualize) {
                         this.tileMap.deletePath("loop");
+                        this.tileMap.deletePath("block");
                         this.tileMap.getPath(dot.path, "pac");
                     }
-                    if(action == "ON"){
+                    if (action == "ON") {
                         this.#manualKeyDown(this.pathDot);
                     }
                     this.historyPac.addStep(
@@ -427,7 +445,12 @@ export default class Pacman {
                     );
                 } else {
                     const j = Math.floor(Math.random() * step.length); // việc random sẽ giúp tránh vòng lặp (vì lúc nào cũng đi vào 0)
-                    if(action == "ON"){
+                    if (dot != null && visualize) {
+                        this.tileMap.deletePath("loop");
+                        this.tileMap.deletePath("pac");
+                        this.tileMap.getPath(dot.path, "block");
+                    }
+                    if (action == "ON") {
                         this.#manualKeyDown(step[j]);
                     }
                     this.historyPac.addStep(
@@ -451,11 +474,12 @@ export default class Pacman {
 
     // Hàm tự động di chuyển
     #automove(visualize) {
-        if(visualize){
+        if (visualize) {
             this.#onOFFautoMove("ON");
         } else {
             this.tileMap.deletePath("pac");
             this.tileMap.deletePath("loop");
+            this.tileMap.deletePath("block");
             this.tileMap.deletePath("ghost");
             this.#onOFFautoMove("ON", visualize);
         }
@@ -463,11 +487,12 @@ export default class Pacman {
 
     // hàm di chuyển pacman
     #move(visualize) {
-        if(visualize){
+        if (visualize) {
             this.#onOFFautoMove("OFF");
         } else {
             this.tileMap.deletePath("pac");
             this.tileMap.deletePath("loop");
+            this.tileMap.deletePath("block");
             this.tileMap.deletePath("ghost");
         }
         if (this.currentMovingDirection != this.requestedMovingDirection) {

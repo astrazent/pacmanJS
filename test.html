@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chú thích Pacman</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-end; /* Căn toàn bộ nội dung sang phải */
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 400px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .line {
+      width: 40px;
+      height: 5px;
+      border-radius: 3px;
+    }
+
+    .line-blue {
+      background-color: #00bfff; /* xanh dương */
+    }
+
+    .line-red {
+      background-color: #ff4d4d; /* đỏ */
+    }
+
+    .line-gray {
+      background-color: #888; /* xám */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Chú thích đường đi của Pacman</h2>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="line line-blue"></div>
+      <span>Đường màu xanh: đường Pacman sẽ đi</span>
+    </div>
+    <div class="legend-item">
+      <div class="line line-red"></div>
+      <span>Đường màu đỏ: hướng ma sẽ đuổi</span>
+    </div>
+    <div class="legend-item">
+      <div class="line line-gray"></div>
+      <span>Đường màu xám: hướng Pacman sẽ thoát khỏi vòng lặp vô tận</span>
+    </div>
+  </div>
+
+</body>
+</html>

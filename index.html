@@ -1,87 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pac-Man</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .wrap-canvas {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            #gameCanvas {
+                box-shadow: 10px 10px 20px black;
+                cursor: url('images/pointer.svg') 8 8, pointer;
+            }
+            h1 {
+                text-align: center;
+                /* font-family: Arial, sans-serif; */
+                color: lightgrey;
+            }
+            body {
+                font-family: "VT323", monospace;
+                font-weight: 200;
+                font-style: normal;
+                display: flex;
+                justify-content: center;
+                overflow: hidden;
+                height: 100vh;
+                background: rgb(41, 41, 141);
+                cursor: url('images/cursor.svg') 0 0, default;
+            }
+            .box-button {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            .btn{
+                cursor: url('images/pointer.svg') 8 8, pointer;
+                font-family: "VT323", monospace;
+                margin-left: 10px;
+                font-weight: 700;
+                border-radius: 5px;
+            }
+            #pause-game {
+                background-color: #4caf50;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 22px;
+            }
+            #auto-play {
+                background-color: #2485d4;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 22px;
+            }
+            #visualize {
+                background-color: #f80404;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 22px;
+            }
+            .annotation {
+                padding: 20px;
+                font-size: x-large;
+                position: fixed; /* hoặc absolute nếu muốn gắn theo body */
+                color: white;
+                top: 50%;
+                right: 250px;
+                transform: translateY(-50%);
+            }
+            .legend {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                max-width: 400px;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pac-Man</title>
-    <style>
-        #gameCanvas {
-           box-shadow: 10px 10px 20px black;
-        }
-        h1{
-            text-align: center;
-            font-family: comic sans MS;
-            color: lightgrey;
-        }
-        body{
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-            height: 100vh;
-            background: linear-gradient(
-                0deg, 
-                rgb(17, 51, 161) 0%, 
-                rgb(136, 34, 195) 100%
-            );
-        }
-        .box-button{
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        #pause-game{
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-        #auto-play{
-                        background-color: #2485d4;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-        #visualize{
-            background-color: #f80404;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-    </style>
-</head>
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
-<body>
-    <div>
-        <h1>Pac-Man</h1>
-        <div class="box-button">
-            <button id="pause-game">Pause</button>
-            <button id="auto-play">Auto play: OFF</button>
-            <button id="visualize">Visualize: OFF</button>
+            .line {
+                width: 40px;
+                height: 5px;
+                border-radius: 3px;
+            }
+
+            .line-green {
+                background-color: #4caf50; /* xanh dương */
+            }
+
+            .line-red {
+                background-color: #ff4d4d; /* đỏ */
+            }
+            .line-purple {
+                background-color: #9D39CE; /* đỏ */
+            }
+
+            .line-gray {
+                background-color: #888; /* xám */
+            }
+            .crop-vertical {
+                width: 100%; /* hoặc chiều rộng cụ thể nếu muốn */
+                max-width: 500px; /* giới hạn chiều rộng nếu cần */
+                height: 200px; /* chiều cao cố định để cắt trên dưới */
+                overflow: hidden; /* cắt phần dư */
+                position: relative;
+                border: 2px solid transparent;
+            }
+
+            .crop-vertical img {
+                width: 100%; /* giữ nguyên chiều rộng ảnh */
+                height: auto; /* không làm méo ảnh */
+                display: block;
+                position: relative;
+                top: -150px; /* đẩy ảnh lên để cắt phần trên nếu muốn */
+            }
+            .main {
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="crop-vertical">
+                <img src="images/logo.png" class="logo" alt="Pac-Man" />
+            </div>
+            <div class="box-button">
+                <button id="pause-game" class="btn">Pause</button>
+                <button id="auto-play" class="btn">Auto play: OFF</button>
+                <button id="visualize" class="btn">Visualize: OFF</button>
+            </div>
+            <input type="hidden" id="pacmanData" />
+            <div class="wrap-canvas">
+                <canvas id="gameCanvas"></canvas>
+            </div>
         </div>
-        <input type="hidden" id="pacmanData">
-        <canvas id="gameCanvas"></canvas>
-    </div>
-    
-    <script type="module" src="src/Game.js"></script>
-</body>
+        <div class="annotation">
+            <h2>Visualize annotation</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="line line-green"></div>
+                    <span>Hướng Pacman sẽ đi</span>
+                </div>
+                <div class="legend-item">
+                    <div class="line line-red"></div>
+                    <span>Hướng ma sẽ đuổi</span>
+                </div>
+                <div class="legend-item">
+                    <div class="line line-purple"></div>
+                    <span>Hướng Pacman định đi nhưng đổi ý</span>
+                </div>
+                <div class="legend-item">
+                    <div class="line line-gray"></div>
+                    <span>Hướng Pacman đi để thoát infinity loop</span>
+                </div>
+            </div>
+        </div>
 
+        <script type="module" src="src/Game.js"></script>
+    </body>
 </html>

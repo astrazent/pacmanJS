@@ -23,6 +23,7 @@ export default class TileMap {
         this.pathGhost = null; // đường đi từ ma đến pacman
         this.pathPac = null; // đường đi pacman đến dot
         this.pathLoop = null; // đường đi pacman đến dot khi bị loop
+        this.pathBlock = null; // đường đi pacman bị chặn
     }
 
     //1 - wall
@@ -79,6 +80,8 @@ export default class TileMap {
         } else if (action == "loop"){
             path.shift();
             this.pathLoop = path;
+        } else if (action == "block"){
+            this.pathBlock = path;
         }
     }
 
@@ -89,6 +92,8 @@ export default class TileMap {
             this.pathPac = null;
         } else if (action == "loop"){
             this.pathLoop = null;
+        } else if (action == "block"){
+            this.pathBlock = null;
         }
     }
 
@@ -120,6 +125,10 @@ export default class TileMap {
         // Vẽ đường đi từ pacman đến dot khi loop nếu có
         if (this.pathLoop && this.pathLoop.length > 1) {
             this.#drawPath(ctx, this.pathLoop, this.tileSize, "gray");
+        }
+        // Đổi màu đường đi của pacman khi bị chặn
+        if (this.pathBlock && this.pathBlock.length > 1) {
+            this.#drawPath(ctx, this.pathBlock, this.tileSize, "purple");
         }
     }
 
