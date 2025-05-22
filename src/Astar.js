@@ -21,7 +21,7 @@ class Node {
 }
 
 // Hàm kiểm tra xem ô có hợp lệ không
-function isValid(x, y, grid) {
+export function isValid(x, y, grid) {
     return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] !== 1;
 }
 
@@ -94,7 +94,6 @@ function astarSearch(grid, src, dest) {
                 // Tính toán giá trị g, h, f cho nút mới
                 newNode.g = currentNode.g + 1;
                 newNode.h = Math.abs(newX - dest.x) + Math.abs(newY - dest.y);
-                console.log(newNode.h);
                 newNode.calculateF();
 
                 // Nếu nút chưa được duyệt hoặc có chi phí tốt hơn
@@ -115,21 +114,38 @@ export default function nextStepAstar(xStart, yStart, xEnd, yEnd, grid) { // Hà
     const src = new Node(xStart, yStart); // Nút bắt đầu
     const dest = new Node(xEnd, yEnd); // Nút kết thúc
     const path = astarSearch(grid, src, dest); // Tìm đường đi
-
     if (path === null || path.length < 2) { // Nếu không tìm được đường đi hoặc chỉ còn 1 nút
-        return null;
+        return [null, null, null, null];
     }
 
     const tile = path[1]; // Lấy nút thứ 2 trong đường đi
+    const guest = path[path.length - 2]; // Lấy phần tử cuối
+    const dir = [];
     // So sánh vị trí của nút thứ 2 với vị trí hiện tại để xác định hướng di chuyển
     if (tile.x - xStart == 1) { 
-        return MovingDirection.down; // Nếu nút thứ 2 nằm phía dưới
-    } else if (tile.x - xStart == -1) {
-        return MovingDirection.up; // Nếu nút thứ 2 nằm phía trên
+        dir.push(MovingDirection.down)
+    } else if (tile.x - xStart == -1) { // x ở đây thực tế là y trên map!
+        dir.push(MovingDirection.up)
     } else if (tile.y - yStart == 1) {
-        return MovingDirection.right; // Nếu nút thứ 2 nằm bên phải
+        dir.push(MovingDirection.right)
     } else if (tile.y - yStart == -1) {
-        return MovingDirection.left; // Nếu nút thứ 2 nằm bên trái
+        dir.push(MovingDirection.left)
     }
-    return null; // Trường hợp còn lại
+
+    // So sánh vị trí nút gần cuối với vị trí hiện đích để xác định hướng dự đoán
+    if (guest.x - xEnd == 1) { 
+        dir.push(MovingDirection.down)
+    } else if (guest.x - xEnd == -1) {
+        dir.push(MovingDirection.up)
+    } else if (guest.y - yEnd == 1) {
+        dir.push(MovingDirection.right)
+    } else if (guest.y - yEnd == -1) {
+        dir.push(MovingDirection.left)
+    }
+    dir.push(path.length - 2);
+    dir.push(path);
+    if(dir.length != 4){
+        return [null, null, null, null]; // Trường hợp còn lại
+    }
+    return dir;
 }

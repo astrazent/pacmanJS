@@ -13,7 +13,9 @@ export default class Enemy{
         this.#loadImages(); // Load hình ảnh
 
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length); // Hướng di chuyển
-
+        this.guestDirection; // Hướng di chuyển dự đoán
+        this.gap; // khoảng cách thực tế
+        this.pathh; // Đường đi tới pacman
         
         this.chaseAstarTimerDefault = 80; // Thời gian chạy A* mặc định
         this.chaseAstarTimer = 0; // Thời gian chạy A*
@@ -32,10 +34,18 @@ export default class Enemy{
             if(!pacman.powerDotActive){ // Nếu phát hiện pacman và pacman không ăn được ghost
                 this.#setDirectionAstar(); // Set hướng di chuyển theo A*
                 this.#moveAstar(); // Di chuyển theo A*
+                this.#saveEnemyDirection(pacman.powerDotActive); // Lưu hướng di chuyển để auto play
             }
             else{
+                // Logic để lấy đường đi cho pacman đuổi ngược ghost
+                if(Number.isInteger(this.x/ this.tileSize) && Number.isInteger(this.y/ this.tileSize)){ // Nếu vị trí của ghost là số nguyên
+                    let pacmanIdX = Math.floor(this.pacmanX/this.tileSize); // Lấy vị trí x của pacman
+                    let pacmanIdY = Math.floor(this.pacmanY/this.tileSize); // Lấy vị trí y của pacman
+                    [, this.guestDirection, this.gap, this.pathh] = nextStepAstar(this.y/ this.tileSize, this.x/ this.tileSize, pacmanIdY, pacmanIdX, this.tileMap.map); // Set hướng di chuyển theo A*
+                }
                 this.#setDirectionRandom(); // Set hướng di chuyển ngẫu nhiên
                 this.#moveRandom(); // Di chuyển ngẫu nhiên
+                this.#saveEnemyDirection(pacman.powerDotActive);
             }
         }
         this.#setImage(ctx, pacman); // Set hình ảnh
@@ -96,14 +106,39 @@ export default class Enemy{
         this.pacmanY = pacman.y;
     }
 
+    // Lưu hướng di chuyển của enemy
+    #saveEnemyDirection(powerDot) {
+        let data = null;
+        if(powerDot){
+            data = {
+                guest: this.guestDirection,
+                gap: this.gap,
+                powerDot: true,
+                path: this.pathh,
+                ghostX: this.x/ this.tileSize,
+                ghostY: this.y/ this.tileSize
+            }
+        } else{
+            data = {
+                guest: this.guestDirection,
+                gap: this.gap,
+                powerDot: false,
+                path: this.pathh,
+                ghostX: this.x/ this.tileSize,
+                ghostY: this.y/ this.tileSize
+            }
+        }
+        const hiddenInput = document.getElementById("pacmanData");
+        hiddenInput.value = JSON.stringify(data);
+    }
+
     // Set hướng di chuyển theo A*
     #setDirectionAstar(){
         if(Number.isInteger(this.x/ this.tileSize) && Number.isInteger(this.y/ this.tileSize)){ // Nếu vị trí của ghost là số nguyên
             let pacmanIdX = Math.floor(this.pacmanX/this.tileSize); // Lấy vị trí x của pacman
             let pacmanIdY = Math.floor(this.pacmanY/this.tileSize); // Lấy vị trí y của pacman
-            this.movingDirection = nextStepAstar(this.y/ this.tileSize, this.x/ this.tileSize, pacmanIdY, pacmanIdX, this.tileMap.map); // Set hướng di chuyển theo A*
+            [this.movingDirection, this.guestDirection, this.gap, this.pathh] = nextStepAstar(this.y/ this.tileSize, this.x/ this.tileSize, pacmanIdY, pacmanIdX, this.tileMap.map); // Set hướng di chuyển theo A*
         }
-        
     }
 
     // Set hướng di chuyển ngẫu nhiên

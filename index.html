@@ -42,6 +42,30 @@
             margin: 4px 2px;
             cursor: pointer;
         }
+        #auto-play{
+                        background-color: #2485d4;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #visualize{
+            background-color: #f80404;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -50,7 +74,10 @@
         <h1>Pac-Man</h1>
         <div class="box-button">
             <button id="pause-game">Pause</button>
+            <button id="auto-play">Auto play: OFF</button>
+            <button id="visualize">Visualize: OFF</button>
         </div>
+        <input type="hidden" id="pacmanData">
         <canvas id="gameCanvas"></canvas>
     </div>
     
