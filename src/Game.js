@@ -1,7 +1,7 @@
 import TileMap from "./TileMap.js";
 
 const tileSize = 32; // Kích thước của mỗi ô trong game
-const velocity = 4; // Tốc độ di chuyển của pacman và ghost
+const velocity = 2; // Tốc độ di chuyển của pacman và ghost
 
 const canvas = document.getElementById("gameCanvas"); // Lấy thẻ canvas từ HTML
 const ctx = canvas.getContext("2d"); // Lấy context 2d từ canvas
