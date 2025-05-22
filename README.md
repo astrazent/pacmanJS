@@ -51,34 +51,3 @@ Ngoài ra, thư mục dự án còn bao gồm:
 
 > Nhóm rất mong nhận được sự góp ý từ cô để hoàn thiện sản phẩm tốt hơn.  
 > **Chân thành cảm ơn cô đã theo dõi và đánh giá dự án của nhóm!**
-
-no pathdot:  11 5 1 0
-Pacman.js:319 no pathdot:  11 6 1 0
-Pacman.js:319 no pathdot:  11 7 1 0
-Pacman.js:319 no pathdot:  11 8 1 0
-Pacman.js:319 no pathdot:  11 9 2 0
-Pacman.js:319 no pathdot:  10 9 3 2
-Pacman.js:315 pathdot:  11 9 0 2
-Pacman.js:315 pathdot:  11 8 0 1
-Pacman.js:315 pathdot:  11 7 0 1
-Pacman.js:315 pathdot:  11 6 0 1
-Pacman.js:319 no pathdot:  11 5 1 0
-
-
-
-
-pathdot:  1 4 0 1
-Pacman.js:227 inf
-Pacman.js:319 no pathdot:  1 3 1 0
-Pacman.js:227 inf
-Pacman.js:315 pathdot:  1 4 0 1
-Pacman.js:227 inf
-Pacman.js:319 no pathdot:  1 3 1 0
-Pacman.js:227 inf
-Pacman.js:315 pathdot:  1 4 0 1
-Pacman.js:227 inf
-Pacman.js:319 no pathdot:  1 3 1 0
-Pacman.js:227 inf
-Pacman.js:315 pathdot:  1 4 0 1
-Pacman.js:227 inf
-Pacman.js:319 no pathdot:  1 3 1 0
