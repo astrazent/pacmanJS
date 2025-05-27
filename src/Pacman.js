@@ -365,8 +365,8 @@ export default class Pacman {
                 }
                 // Kiểm tra vòng lặp vô tận
                 if (
-                    this.historyPac.checkInfiniteLoop() &&
-                    this.historyGhost.checkInfiniteLoop()
+                    this.historyPac.checkInfiniteLoop() 
+                    //&& this.historyGhost.checkInfiniteLoop()
                 ) {
                     if (dot == null) {
                         this.pathDotEscape = null;
@@ -401,7 +401,7 @@ export default class Pacman {
                     }
                     const k = Math.floor(Math.random() * tempStep.length);
                     this.#manualKeyDown(tempStep[k]);
-                }
+                } 
             } else {
                 if (!powerDot || this.powerDotAboutToExpire) {
                     for (let i = 0; i < 4; i++) {
@@ -417,7 +417,7 @@ export default class Pacman {
                             step.push(i);
                         }
                     }
-                } else {
+                } else if(!this.powerDotAboutToExpire) {
                     step.push(dir); // cho pacman đuổi ma
                 }
                 if (step.includes(this.pathDot)) {
